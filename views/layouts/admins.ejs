@@ -1,0 +1,8 @@
+      <select name='adminitrador_id'>
+      <% if(data1.length)
+	  {  for(var i = 0;i < data1.length;i++) 
+		 { 
+		 %>
+		 <option value="<%=data1[i].id%>"><%=data1[i].id%></option>
+	 <% } } %>
+      </select>

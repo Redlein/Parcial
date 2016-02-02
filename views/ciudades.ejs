@@ -1,0 +1,8 @@
+      <select id='ciudad_id' name='ciudad_id'>
+      <% if(data.length)
+	  {  for(var i = 0;i < data.length;i++) 
+		 {
+		 %>
+		 <option value="<%=data[i].id%>"><%=data[i].nombre%></option>
+	 <% } } %>
+      </select>

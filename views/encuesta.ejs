@@ -1,0 +1,83 @@
+<%- include layouts/header.ejs %>
+
+		<div class="page-data">
+		 
+		 
+		
+                <table cellpadding="11">
+				<tr>
+					<th>Encuesta Id</th>
+					<td id='encuesta_id'>0</td>
+				</tr>
+                <tr>
+                    <td class="label">Adminitrador_id</td><td> 
+					<!--<input type="text" name="adminitrador_id" required>-->
+					<div id='adms'></div>
+					</td>
+                 </tr>
+                 <tr>
+                    <td class="label" valign="top">Titulo</td><td valign="top"> <textarea id='titulo' name="titulo" required cols="30" rows="5"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="label">Fecha Inicio</td><td>: <input type="date" id='fechainicio'name="fechainicio" required></td>
+                 </tr>
+                  <tr>
+                    <td class="label">Fecha Fin</td><td>: <input type="date" id='fechafin'name="fechafin" required></td>
+                 </tr>
+                 <tr>
+                    <td class="label"></td>
+                    <td>
+                        &nbsp; <!--<input type="submit" name="submit" value="Guardar">-->
+						<button onclick='guardar()'>Guardar</button>
+                       <input type="button" name="cancel" value="Cancel" class="cancel" onClick="cancelAdd()">
+                    </td>
+                 </tr>
+                </table>
+        </div>
+		<button onclick='buscar();'>Buscar</button>
+		<div id='busqueda'>
+		</div>
+<%- include layouts/footer.ejs %>
+
+
+<script>
+		function mostrarDatos(d)
+		{	dd=d.split("*");
+			$('#encuesta_id').html(dd[0]);
+			$('#adminitrador_id').val(dd[5]);
+			$('#titulo').val(dd[2]);
+			$('#fechainicio').val(dd[3]);
+			$('#fechafin').val(dd[4]);
+		}
+		function guardar()
+		{	encuesta_id=$('#encuesta_id').html();
+			adminitrador_id=$('#adminitrador_id').val();
+			titulo=$('#titulo').val();
+			fechainicio=$('#fechainicio').val();
+			fechafin=$('#fechafin').val();
+			url="http://localhost:4300/encuesta/add";
+			if(parseInt(encuesta_id)>0)
+				url="http://localhost:4300/encuesta/editar";
+			datos="encuesta_id="+encuesta_id+"&adminitrador_id="+adminitrador_id+"&titulo="+titulo+"&fechainicio="+fechainicio+"&fechafin="+fechafin;
+			$.ajax({
+			type:'post',
+			url:url,
+			data:datos,
+			success:function(html)
+			{	alert(html);
+			}
+			});
+		}
+		
+		function buscar()
+		{
+			$.ajax({
+			type:'post',
+			url:'http://localhost:4300/encuesta/listar',
+			data:'',
+			success:function(html)
+			{	$('#busqueda').html(html);
+			}
+			});
+		}
+</script>

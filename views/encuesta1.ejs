@@ -1,0 +1,44 @@
+<%- include layouts/header.ejs %>
+
+		<div class="page-data">
+		
+         <div class="data-btn">
+         <button onClick="addEncuesta();">+ Agregar</button>
+         </div>
+         <div class="data-table">
+            <table border="1" cellpadding="7" cellspacing="7">
+                <tr>
+                    <th width="50px">No</th>
+                    <th>Administrador</th>
+                    <th>Encuesta</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th width="120px">Acci&oacute;n</th>
+                </tr>
+                               
+                <% if(data.length){ 
+                                
+                 for(var i=0;i < data.length;i++) { cad=data[i].id+"*"+data[i].adminitrador_id+"*"+data[i].titulo+"*"+data[i].fechainicio+"*"+data[i].fechafin%>
+                <tr>
+                    <td><%=(i+1)%></td>
+                    <td><%=data[i].adminitrador_id%></td>
+                    <td><%=data[i].titulo%></td>
+                    <td><%=data[i].fechainicio.toISOString().replace(/T/,' ').replace(/\..+/,'')%></td>
+                    <td><%=data[i].fechafin.toISOString().replace(/T/,' ').replace(/\..+/,'')%></td>
+                    <td>
+                        <a class="a-inside edit" href="../encuesta/edit/<%=cad%>">E</a>
+                       
+                        <a class="a-inside delete" href="../encuesta/delete/<%=data[i].id%>">X</a>
+                       
+                    </td>
+                </tr>
+            <% }
+             }else{ %>
+                 <tr>
+                    <td colspan="3">No hay encuestas...</td>
+                 </tr>
+            <% } %>
+            </table>
+         </div>
+        </div>
+<%- include layouts/footer.ejs %>

@@ -1,0 +1,117 @@
+<%- include layouts/header.ejs %>
+
+	<div class="page-data">
+        <table cellpadding="11">
+			<tr>
+				<td class="label">Cliente Id</td>
+				<td id='cliente_id'>: 0</td>
+			</tr>
+             <tr>
+                <td class="label" valign="top">DNI</td><td valign="top">: <input type="text" id='dni' name="titulo" required></input></td>
+            </tr>
+            <tr>
+                <td class="label">Apellidos</td><td>: <input type="text" id='apellidos'name="apellidos" required></td>
+            </tr>
+            <tr>
+                <td class="label">Nombres</td><td>: <input type="text" id='nombres'name="nombres" required></td>
+            </tr>
+            <tr>
+                <td class="label">Fecha nacimiento</td><td>: <input type="date" id='fechanac'name="fechanac" required></td>
+            </tr>
+            <tr>
+                <td class="label">E-mail</td><td>: <input type="text" id='email'name="email" required></td>
+            </tr>
+            <tr>
+                <td class="label">Clave</td><td>: <input type="password" id='clave' name="clave" required></td>
+            </tr>
+            <tr>
+                <td class="label">Ciudad ID</td><td>
+				<div id='ciudades'></div>
+				</td>
+            </tr>
+            <tr>
+                <td class="label">Categoria ID</td><td>
+				<div id='categorias'></div>
+				</td>
+            </tr>
+
+            <tr>
+               	<td class="label"></td>
+                <td>
+                    &nbsp;
+					<button onclick='guardar()'>Guardar</button>
+                   <input type="button" name="cancel" value="Cancel" class="cancel" onClick="cancelAdd()">
+                </td>
+            </tr>
+        </table>
+    </div>
+	<button onclick='buscar();'>Buscar</button>
+	<div id='busqueda'>
+	</div>
+<%- include layouts/footer.ejs %>
+
+
+<script>
+var dnis =Array();
+		function mostrarDatos(d)
+		{	dd=d.split("*");
+			$('#cliente_id').html(dd[0]);
+			$('#dni').val(dd[1]);
+			$('#apellidos').val(dd[2]);
+			$('#nombres').val(dd[3]);
+			$('#fechanac').val(dd[4]);
+			$('#email').val(dd[5]);
+			$('#ciudad_id').val(dd[6]);
+			$('#categoria_id').val(dd[7]);
+		}
+		function llevarDNI (dn) {
+			dnis = dn;
+			alert(dn);
+		}
+		function verificarDNI (dni) {
+			for (var i = 0; i < dnis.length; i++) {
+				if (dni == dnis[i])
+				{
+					alert("si hay");
+				}
+			};
+
+		}
+		function guardar()
+		{	
+			cliente_id=$('#cliente_id').html();
+			dni=$('#dni').val();
+			vf = verificarDNI(dni);
+			apellidos=$('#apellidos').val();
+			nombres=$('#nombres').val();
+			fechanac=$('#fechanac').val();
+			email=$('#email').val();
+			clave=$('#clave').val();
+			ciudad_id=$('#ciudad_id').val();
+			categoria_id=$('#categoria_id').val();
+			url="http://localhost:4300/cliente/add";
+			if(parseInt(cliente_id)>0)
+				url="http://localhost:4300/cliente/editar";
+			datos="cliente_id="+cliente_id+"&dni="+dni+"&apellidos="+apellidos+"&nombres="+nombres+"&fechanac="+fechanac+"&email="+email+"&clave="+clave+"&ciudad_id="+ciudad_id+"&categoria_id="+categoria_id;
+			$.ajax({
+			type:'post',
+			url:url,
+			data:datos,
+			success:function(html)
+			{	alert(html);
+			}
+			});
+		}
+		
+		function buscar()
+		{
+			$.ajax({
+			type:'post',
+			url:'http://localhost:4300/cliente/listar',
+			data:'',
+			success:function(html)
+			{	$('#busqueda').html(html);
+			}
+			});
+		}
+</script>

@@ -1,0 +1,116 @@
+<%- include layouts/header.ejs %>
+
+		<div class="page-data">
+		 
+		 
+		
+                <table cellpadding="11">
+				<tr>
+					<th>Encuesta Id</th>
+					<td id='encuesta_id'>0</td>
+				</tr>
+                <tr>
+                    <td class="label">Adminitrador_id</td><td> 
+					<!--<input type="text" name="adminitrador_id" required>-->
+					<div id='adms'></div>
+					</td>
+                 </tr>
+                 <tr>
+                    <td class="label" valign="top">Titulo</td><td valign="top"> <textarea id='titulo' name="titulo" required cols="30" rows="5"></textarea></td>
+                </tr>
+                <tr>
+                    <td class="label">Fecha Inicio</td><td>: <input type="date" id='fechainicio'name="fechainicio" required></td>
+                 </tr>
+                  <tr>
+                    <td class="label">Fecha Fin</td><td>: <input type="date" id='fechafin'name="fechafin" required></td>
+                 </tr>
+                 <tr>
+                    <td class="label"></td>
+                    <td>
+                        &nbsp; <!--<input type="submit" name="submit" value="Guardar">-->
+						<button onclick='guardar()'>Guardar</button>
+                       <input type="button" name="cancel" value="Cancel" class="cancel" onClick="cancelAdd()">
+                    </td>
+                 </tr>
+                </table>
+        </div> 
+		 
+		<div class="data-btn">
+         <button onClick="addEncuesta();">+ Agregar</button>
+        </div>
+		
+        <div class="data-table">
+            <table border="1" cellpadding="7" cellspacing="7">
+                <tr>
+                    <th width="50px">No</th>
+                    <th>Administrador</th>
+                    <th>Encuesta</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th width="120px">Acci&oacute;n</th>
+                </tr>
+                               
+                <% if(data.length){ 
+                 var d="";
+				 var nd=data.length;	
+                 for(var i=0;i<nd;i++) 
+				 { d=data[i].id+"*"+data[i].nom+"*"+data[i].tit+"*"+data[i].fechainicio+"*"+data[i].fechafin+"*"+data[i].aid;
+				 //console.log(d);
+				 %>
+                 
+                <tr>
+                    <td><%=(i+1)%></td>
+                    <td><%=data[i].nom%></td>
+                    <td><%=data[i].tit%></td>
+                    <td><%=data[i].fechainicio%></td>
+                    <td><%=data[i].fechafin%></td>
+                    <td>
+                        <a class="a-inside edit" href="#" onClick="mostrarDatos('<%=d%>')">E</a>
+                       
+                        <a class="a-inside delete" href="../encuesta/delete/<%=data[i].id%>">X</a>
+                    </td>
+                </tr>
+            <% }
+            
+             }else{ %>
+                 <tr>
+                    <td colspan="3">No hay encuestas...</td>
+                 </tr>
+            <% } %>
+            </table>
+         </div>
+        </div>
+		
+		
+<%- include layouts/footer.ejs %>
+
+
+<script>
+		function mostrarDatos(d)
+		{	dd=d.split("*");
+			$('#encuesta_id').html(dd[0]);
+			$('#adminitrador_id').val(dd[5]);
+			$('#titulo').val(dd[2]);
+			$('#fechainicio').val(dd[3]);
+			$('#fechafin').val(dd[4]);
+		}
+		function guardar()
+		{	encuesta_id=$('#encuesta_id').html();
+			adminitrador_id=$('#adminitrador_id').val();
+			titulo=$('#titulo').val();
+			fechainicio=$('#fechainicio').val();
+			fechafin=$('#fechafin').val();
+			url="http://localhost:4300/encuesta/add";
+			if(parseInt(encuesta_id)>0)
+				url="http://localhost:4300/encuesta/editar";
+			datos="encuesta_id="+encuesta_id+"&adminitrador_id="+adminitrador_id+"&titulo="+titulo+"&fechainicio="+fechainicio+"&fechafin="+fechafin;
+			$.ajax({
+			type:'post',
+			url:url,
+			data:datos,
+			success:function(html)
+			{	alert(html);
+			}
+			});
+		}
+</script>
